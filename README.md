@@ -6,44 +6,52 @@
 
 
 ## Задание 1
-Стартовый борд: 
-
-
 Разработана сопрограмма (_корутина_), реализующая возвращение списка элементов ряда Фибоначчи. 
 
-```python
->> gen = my_genn()
-
->> gen.send(3) 
-[0, 1, 1] 
-
->> gen.send(5) 
-[0, 1, 1, 2, 3] 
-
->> gen.send(8) 
-[0, 1, 1, 2, 3, 5, 8, 13] 
+Сопрограмма для создания списка чисел Фибоначчи
+```
+def my_genn():
+    """Сопрограмма, которая возвращает первые n элементов ряда Фибоначчи."""
+    while True:
+        number_of_fib_elem = yield  
+        fib_gen = fib_elem_gen()  
+        l = list(itertools.islice(fib_gen, number_of_fib_elem))  
+        yield l  
 
 ```
 Необходимые тесты в файле ```test_fib.py```.
 
 ## Задание 2
 Дополните код классом ```FibonacchiLst``` (пример такого класса представлен в even_numbers_iterator.py), который бы позволял перебирать элементы из ряда Фибоначчи по данному ей списку.
-Итератор должен вернуть очередное значение, которое принадлежит ряду Фибоначчи, из данного ей списка. Например: 
-для lst = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1], ```FibonacchiLst``` должен вернуть [0, 1, 2, 3, 5, 8, 1]
-
-Решение может быть выполнено с помощью реализации содержимого методов ```__init__```,```__iter__```, ```__next__``` или с помощью реализации метода ```__getitem__```.
-
-```python
-
-class FibonacchiLst:
-    def __init__(self):
-        pass
-    
-    def __iter__(self):
-        pass 
-
-    def __next__(self):
-        pass
+Итератор должен вернуть очередное значение, которое принадлежит ряду Фибоначчи, из данного ей списка.
 
 ```
-Пример реализации итератора, возвращающего четные элементы, из iterable-объекта представлен в файле ```even_numbers_iterator.py```.
+class FibonacchiLst:
+    def __init__(self, lst):
+        self.lst = lst
+        self.idx = 0
+        self.fib_set = self._generate_fibonacci_set(max(lst))
+    
+    def _generate_fibonacci_set(self, n):
+        fib_set = set()
+        a, b = 0, 1
+        while a <= n:
+            fib_set.add(a)
+            a, b = b, a + b
+        return fib_set
+    
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        while self.idx < len(self.lst):
+            num = self.lst[self.idx]
+            self.idx += 1
+            if num in self.fib_set:
+                return num
+        raise StopIteration
+
+lst = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1]
+fib_iterator = FibonacchiLst(lst)
+print(list(fib_iterator))
+```
