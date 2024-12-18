@@ -20,6 +20,10 @@ def my_genn():
 
 ```
 Необходимые тесты в файле ```test_fib.py```.
+![image](https://github.com/user-attachments/assets/85f6a8a7-170d-43e0-bc3e-e2c5b7247b2d)
+![image](https://github.com/user-attachments/assets/96d839f9-6134-4d8d-9f1f-d261ef76eb66)
+
+
 
 ## Задание 2
 Дополните код классом ```FibonacchiLst``` (пример такого класса представлен в even_numbers_iterator.py), который бы позволял перебирать элементы из ряда Фибоначчи по данному ей списку.
